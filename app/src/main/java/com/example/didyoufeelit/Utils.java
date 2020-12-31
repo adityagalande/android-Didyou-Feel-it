@@ -17,10 +17,15 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 public class Utils {
+    private Utils(){
+
+    }
 
     public static Event fetchEarthquakeData(String requestUrl) {
+        // Create URL object
         URL url = createUrl(requestUrl);
 
+        // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
 
         try {
@@ -28,7 +33,8 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return extractFromJson(jsonResponse);
+        Event event = extractFromJson(jsonResponse);
+        return event;
     }
 
     private static URL createUrl(String getUrl) {
@@ -54,6 +60,8 @@ public class Utils {
 
         try {
             URLConnection = (HttpURLConnection) url.openConnection();
+            URLConnection.setReadTimeout(10000);
+            URLConnection.setReadTimeout(15000);
             URLConnection.setRequestMethod("GET");
             URLConnection.connect();
 
